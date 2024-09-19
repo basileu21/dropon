@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Loja Virtual de Dropshipping">
+    <title>Loja Virtual de Dropshipping</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <h1>Loja Virtual Dropshipping</h1>
+    <nav>
+        <a href="#home">Início</a>
+        <a href="#produtos">Produtos</a>
+        <a href="#pagamento">Pagamento</a>
+        <a href="#contato">Contato</a>
+    </nav>
+</header>
+
+<section id="home" class="hero">
+    <h2>Os Melhores Produtos ao Seu Alcance</h2>
+    <p>Descubra as últimas tendências e ofertas incríveis!</p>
+</section>
+
+<section id="produtos" class="products">
+    <h2>Nossos Produtos Mais Vendidos</h2>
+    <div class="product-grid">
+        <!-- Produtos -->
+        <div class="product">
+            <img src="https://via.placeholder.com/300/FFD700/000000?text=Produto+1" alt="Produto 1">
+            <h3>Produto 1</h3>
+            <p>R$ 99,00</p>
+            <p>Descrição do produto 1.</p>
+            <p><strong>Frete Grátis!</strong></p>
+            <input type="number" min="1" value="1" id="qty-prod1">
+            <button onclick="addToCart('Produto 1', 99, document.getElementById('qty-prod1').value)">Adicionar ao Carrinho</button>
+        </div>
+        <!-- Repita a estrutura para mais produtos até 25 -->
+        <!-- Produto 25 -->
+        <div class="product">
+            <img src="https://via.placeholder.com/300/FFD700/000000?text=Produto+25" alt="Produto 25">
+            <h3>Produto 25</h3>
+            <p>R$ 320,00</p>
+            <p>Descrição do produto 25.</p>
+            <p><strong>Frete Grátis!</strong></p>
+            <input type="number" min="1" value="1" id="qty-prod25">
+            <button onclick="addToCart('Produto 25', 320, document.getElementById('qty-prod25').value)">Adicionar ao Carrinho</button>
+        </div>
+    </div>
+    <button onclick="finalizePurchase()">Finalizar Compra</button>
+</section>
+
+<section id="pagamento" class="payment">
+    <h2>Opções de Pagamento</h2>
+    <p>Aceitamos cartões de crédito, PayPal e transferência bancária. Para pagamento via PIX, use a chave abaixo:</p>
+    <p><strong>Chave PIX: rafaelbasileu7@gmail.com</strong></p>
+    <p>Após efetuar o pagamento, envie o comprovante pelo WhatsApp.</p>
+</section>
+
+<section id="contato" class="contact">
+    <h2>Entre em Contato</h2>
+    <p>Email: contato@lojadropshipping.com.br</p>
+    <p>Telefone: (11) 98765-4321</p>
+</section>
+
+<footer>
+    <p>&copy; 2024 Loja Virtual Dropshipping. Todos os direitos reservados.</p>
+</footer>
+
+<!-- Carrinho de Compras -->
+<div id="cart" style="display:none;">
+    <h3>Carrinho de Compras</h3>
+    <div id="cartItems"></div>
+    <p><strong>Total: R$ <span id="totalPrice">0.00</span></strong></p>
+    <button onclick="openOrderForm()">Finalizar Compra</button>
+    <button onclick="closeCart()">Cancelar</button>
+</div>
+
+<!-- Formulário de pedido -->
+<div id="orderForm" style="display:none;">
+    <h3>Finalizar Pedido</h3>
+    <label>Nome:</label>
+    <input type="text" id="name" required><br>
+    <label>Número de Contato:</label>
+    <input type="text" id="contact" required><br>
+    <label>Endereço:</label>
+    <input type="text" id="address" required><br>
+    <label>Bairro:</label>
+    <input type="text" id="bairro" required><br>
+    <label>Cidade:</label>
+    <input type="text" id="cidade" required><br>
+    <label>Estado:</label>
+    <input type="text" id="estado" required><br>
+    <label>CEP:</label>
+    <input type="text" id="cep" required><br>
+    <button onclick="sendOrder()">Enviar Pedido</button>
+    <button onclick="closeOrderForm()">Cancelar</button>
+</div>
+
+<script>
+    let cart = [];
+    let total = 0;
+
+    function addToCart(productName, price, quantity) {
+        const itemTotal = price * quantity;
+        cart.push({ productName, price, quantity, itemTotal });
+        total += itemTotal;
+        alert(`${productName} foi adicionado ao carrinho!`);
+        updateCart();
+    }
+
+    function updateCart() {
+        const cartItemsDiv = document.getElementById('cartItems');
+        cartItemsDiv.innerHTML = '';
+        cart.forEach(item => {
+            cartItemsDiv.innerHTML += `<p>${item.productName} - R$${item.price.toFixed(2)} x ${item.quantity} = R$${item.itemTotal.toFixed(2)}</p>`;
+        });
+        document.getElementById('totalPrice').innerText = total.toFixed(2);
+        document.getElementById('cart').style.display = 'block';
+    }
+
+    function finalizePurchase() {
+        if (cart.length === 0) {
+            alert("Seu carrinho está vazio!");
+            return;
+        }
+        updateCart();
+        openOrderForm();
+    }
+
+    function closeCart() {
+        document.getElementById('cart').style.display = 'none';
+    }
+
+    function openOrderForm() {
+        document.getElementById('orderForm').style.display = 'block';
+    }
+
+    function closeOrderForm() {
+        document.getElementById('orderForm').style.display = 'none';
+    }
+
+    function sendOrder() {
+        const name = document.getElementById('name').value;
+        const contact = document.getElementById('contact').value;
+        const address = document.getElementById('address').value;
+        const bairro = document.getElementById('bairro').value;
+        const cidade = document.getElementById('cidade').value;
+        const estado = document.getElementById('estado').value;
+        const cep = document.getElementById('cep').value;
+
+        let orderDetails = `Nome: ${name}\nContato: ${contact}\nEndereço: ${address}\nBairro: ${bairro}\nCidade: ${cidade}\nEstado: ${estado}\nCEP: ${cep}\n`;
+        orderDetails += 'Produtos:\n';
+        cart.forEach(item => {
+            orderDetails += `${item.productName} - R$${item.price.toFixed(2)} x ${item.quantity} = R$${item.itemTotal.toFixed(2)}\n`;
+        });
+        orderDetails += `Total: R$${total.toFixed(2)}\nFrete Grátis!\n`;
+        orderDetails += "Após efetuar o pagamento via PIX, por favor envie o comprovante.";
+
+        const whatsappLink = `https://api.whatsapp.com/send?phone=5511987654321&text=${encodeURIComponent(orderDetails)}`;
+        window.open(whatsappLink, '_blank');
+        alert("Pedido enviado! Por favor, verifique o WhatsApp.");
+        closeOrderForm();
+        closeCart();
+        cart = [];
+        total = 0;
+    }
+</script>
+
+</body>
+</html>
